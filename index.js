@@ -6,6 +6,8 @@ const connection = require("./Config/db.js");
 require('dotenv').config();
 const cors = require('cors');
 
+const emailRoutes = require("./Routes/emailRoutes.js");
+
 const app = express();
 const port = process.env.PORT || 8081;
 
@@ -15,6 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
+app.use("/email", emailRoutes);
 app.use('/api/form', FormRoute); // Route for handling form submissions
 app.use('/api/career', CareerRoute); // Route for handling career opportunities
 
