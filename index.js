@@ -52,12 +52,12 @@ function createCareersTable() {
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         location VARCHAR(255) NOT NULL,
-        job_positions INT NOT NULL,
-        type VARCHAR(50) NOT NULL,
+        Job_Positions INT NOT NULL,
+        Type VARCHAR(50) NOT NULL,
         site VARCHAR(50) NOT NULL,
-        job_description TEXT,
-        responsibilities TEXT,
-        candidate_requirements TEXT,
+        Job_Description TEXT,
+        Responsibilities TEXT,
+        Candidate_Requirements TEXT,
         isOpen BOOLEAN DEFAULT true,
         isShow BOOLEAN DEFAULT true
     )

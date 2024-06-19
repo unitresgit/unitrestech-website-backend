@@ -12,7 +12,7 @@ function addCareerEntry(data, callback) {
         const isShow = count === 0 ? true : false;
 
         const insertQuery = `
-            INSERT INTO careers (name, location, job_positions, type, site, job_description, responsibilities, candidate_requirements, isOpen, isShow)
+            INSERT INTO careers (name, location, Job_Positions, Type, site, Job_Description, Responsibilities, Candidate_Requirements, isOpen, isShow)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
