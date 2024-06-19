@@ -7,10 +7,6 @@ function addCareerEntry(data, callback) {
             return callback(err);
         }
 
-        const count = result[0].count;
-        const isOpen = count === 0 ? true : false;
-        const isShow = count === 0 ? true : false;
-
         const insertQuery = `
             INSERT INTO careers (name, location, Job_Positions, Type, site, Job_Description, Responsibilities, Candidate_Requirements, isOpen, isShow)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -24,8 +20,8 @@ function addCareerEntry(data, callback) {
             data.job_description, 
             JSON.stringify(data.responsibilities), 
             JSON.stringify(data.candidate_requirements), 
-            isOpen, 
-            isShow
+            data.isOpen, 
+            data.isShow
         ];
 
         connection.query(insertQuery, values, (err, result) => {
