@@ -2,10 +2,17 @@ const asyncHandler = require('express-async-handler');
 const nodemailer = require('nodemailer');
 
 const sendEmail = asyncHandler(async (req, res) => {
-
+    const {name,email,phone,company_name,message}=req.body;
+    const emailContent = `
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone}
+        Company Name: ${company_name}
+        Message: ${message}
+    `;
     const to="info@unitrestech.com";
     const subject="Website Form Submitted"
-    const text=req.body;
+    const text=emailContent;
 
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
