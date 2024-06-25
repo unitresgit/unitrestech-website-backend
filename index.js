@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const FormRoute = require('./Routes/FormRoute.js');
-const CareerRoute = require('./Routes/CareerRoute.js'); // Assuming CareerRoute.js handles career-related routes
+const CareerRoute = require('./Routes/CareerRoute.js'); 
+const APIGatewayFormRoute = require('./Routes/APIGatewayFormRoute.js'); 
 const connection = require("./Config/db.js");
 require('dotenv').config();
 const cors = require('cors');
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/email", emailRoutes);
 app.use('/api/form', FormRoute); // Route for handling form submissions
 app.use('/api/career', CareerRoute); // Route for handling career opportunities
+app.use("/apigateway/form", APIGatewayFormRoute);
 
 // Default route
 app.get("/", (req, res) => {
@@ -48,7 +50,7 @@ function createFormsTable() {
     });
 }
 
-// Function to create the 'careers' table if it doesn't exist
+
 function createCareersTable() {
     const createTableQuery = `
     CREATE TABLE IF NOT EXISTS careers (
@@ -75,6 +77,24 @@ function createCareersTable() {
     });
 }
 
+// APIGateway
+function APIGatewayTable() {
+    const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS APIGatewayForm (
+        email VARCHAR(255) NOT NULL
+    )
+    `;
+
+    connection.query(createTableQuery, (err, result) => {
+        if (err) {
+            console.error('Error creating APIGatewayForm table:', err);
+        } else {
+            console.log('APIGatewayForm table created successfully');
+        }
+    });
+}
+
+
 // Connect to database and create necessary tables
 connection.connect((err) => {
     if (err) {
@@ -83,6 +103,7 @@ connection.connect((err) => {
         console.log('Connected to database');
         createFormsTable(); // Ensure forms table is created
         createCareersTable(); // Ensure careers table is created
+        APIGatewayTable();
     }
 });
 
