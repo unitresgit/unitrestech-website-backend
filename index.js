@@ -99,6 +99,8 @@ function APIGatewayTable() {
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to database:', err);
+        console.log(process.env.DB_HOST);
+        console.log(process.env.DB_USER);
     } else {
         console.log('Connected to database');
         createFormsTable(); // Ensure forms table is created
