@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const sendEmail = asyncHandler(async (req, res) => {
     const {name,email,phone,company_name,message}=req.body;

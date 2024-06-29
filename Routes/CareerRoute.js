@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../Config/db.js');
+const client = require('../Config/db2.js');
 
-// Route to handle POST request to add a new career
 router.post('/', async (req, res) => {
     try {
         const {
@@ -22,15 +21,15 @@ router.post('/', async (req, res) => {
             INSERT INTO careers (
                 name,
                 location,
-                Job_Positions,
-                Type,
+                job_positions,
+                type,
                 site,
-                Job_Description,
-                Responsibilities,
-                Candidate_Requirements,
-                isOpen,
-                isShow
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                job_description,
+                responsibilities,
+                candidate_requirements,
+                is_open,
+                is_show
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         `;
 
         const values = [
@@ -40,24 +39,19 @@ router.post('/', async (req, res) => {
             Type,
             site,
             Job_Description,
-            JSON.stringify(Responsibilities), // Convert to JSON string
-            JSON.stringify(Candidate_Requirements), // Convert to JSON string
+            JSON.stringify(Responsibilities), 
+            JSON.stringify(Candidate_Requirements),
             isOpen,
             isShow
         ];
 
-        connection.query(insertQuery, values, (err, result) => {
-            if (err) {
-                console.error('Error inserting career data:', err);
-                res.status(500).send('Error submitting career');
-            } else {
-                console.log('Career submitted:', result);
-                res.status(200).send('Career submitted successfully');
-            }
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        await client.query(insertQuery, values);
+        console.log('Career submitted successfully');
+        res.status(200).send('Career submitted successfully');
+    }
+    catch (err) {
+        console.error('Error inserting career data:', err);
+        res.status(500).send('Error submitting career');
     }
 });
 
@@ -68,17 +62,11 @@ router.get('/', async (req, res) => {
             SELECT * FROM careers
         `;
         
-        connection.query(selectQuery, (err, results) => {
-            if (err) {
-                console.error('Error retrieving careers:', err);
-                res.status(500).send('Error retrieving careers');
-            } else {
-                res.status(200).json(results);
-            }
-        });
+        const { rows } = await client.query(selectQuery);
+        res.status(200).json(rows);
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        console.error('Error retrieving careers:', err);
+        res.status(500).send('Error retrieving careers');
     }
 });
 
